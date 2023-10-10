@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Transaction } from "../../types";
+import { format } from "date-fns";
 
 type TransactionsListProps = {
   transactions: Transaction[];
@@ -14,7 +15,20 @@ export const TransactionsList: FC<TransactionsListProps> = ({
     <ol>
       {transactions.map((transaction) => (
         <li key={transaction.id}>
-          {transaction.id} - {transaction.description}
+          <span>{transaction.id} - </span>
+
+          <span>{transaction.description} - </span>
+
+          <span>{transaction.type === "credit" ? "Crédito" : "Débito"} - </span>
+
+          <span>{format(transaction.referenceDate, "dd/MM/yyyy")} - </span>
+
+          <span>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(transaction.value)}
+          </span>
         </li>
       ))}
     </ol>

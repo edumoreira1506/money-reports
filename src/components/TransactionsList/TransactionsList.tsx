@@ -1,6 +1,10 @@
 import { FC } from "react";
 import { Transaction } from "../../types";
-import { format } from "date-fns";
+import {
+  getBrazilianDate,
+  getBrazilianValue,
+  getTranslatedType,
+} from "../../utils";
 
 type TransactionsListProps = {
   transactions: Transaction[];
@@ -19,16 +23,11 @@ export const TransactionsList: FC<TransactionsListProps> = ({
 
           <span>{transaction.description} - </span>
 
-          <span>{transaction.type === "credit" ? "Crédito" : "Débito"} - </span>
+          <span>{getTranslatedType(transaction.type)} - </span>
 
-          <span>{format(transaction.referenceDate, "dd/MM/yyyy")} - </span>
+          <span>{getBrazilianDate(transaction.referenceDate)} - </span>
 
-          <span>
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(transaction.value)}
-          </span>
+          <span>{getBrazilianValue(transaction.value)}</span>
         </li>
       ))}
     </ol>

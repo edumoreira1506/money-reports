@@ -1,6 +1,10 @@
 import { FC, useState } from "react";
-import { format } from "date-fns";
 import { Transaction } from "../../types";
+import {
+  getAmericanDate,
+  getDateFromString,
+  getTranslatedType,
+} from "../../utils";
 
 type TransactionFormProps = {
   onSubmit: (transaction: Omit<Transaction, "id">) => void;
@@ -52,8 +56,8 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
 
       <select value={type} onChange={(e) => setType(e.target.value)}>
         <option value="">Selecionar...</option>
-        <option value="credit">Crédito</option>
-        <option value="debit">Débito</option>
+        <option value="credit">{getTranslatedType("credit")}</option>
+        <option value="debit">{getTranslatedType("debit")}</option>
       </select>
 
       <textarea
@@ -64,12 +68,10 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       />
 
       <input
-        onChange={(e) =>
-          setReferenceDate(new Date(`${e.target.value}T00:00:00`))
-        }
+        onChange={(e) => setReferenceDate(getDateFromString(e.target.value))}
         type="date"
-        value={format(referenceDate, "yyyy-MM-dd")}
-        max={format(currentDate, "yyyy-MM-dd")}
+        value={getAmericanDate(referenceDate)}
+        max={getAmericanDate(currentDate)}
       />
 
       <button type="submit">Salvar</button>

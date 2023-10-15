@@ -62,6 +62,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       <Text>Nova transação</Text>
 
       <TextArea
+        required
         placeholder="Descrição da transação"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -69,6 +70,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       />
 
       <TextFieldInput
+        required
         type="number"
         value={value === 0 ? "" : value}
         onChange={(e) => setValue(Number(e.target.value))}
@@ -77,6 +79,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       />
 
       <Select.Root
+        required
         defaultValue=""
         name="type"
         value={type}
@@ -94,6 +97,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
 
       <TextFieldRoot>
         <input
+          required
           className="-translate-x-1 input-date rt-TextFieldInput rt-r-size-2 rt-variant-surface"
           name="referenceDate"
           onChange={(e) => setReferenceDate(getDateFromString(e.target.value))}

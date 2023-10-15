@@ -3,9 +3,10 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { App } from "./components/App";
 import reportWebVitals from "./reportWebVitals";
-import { Theme } from "@radix-ui/themes";
 
 import "@radix-ui/themes/styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import { Providers } from "./components/Providers";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,9 +14,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Theme appearance="dark">
+    <Providers>
       <App />
-    </Theme>
+    </Providers>
   </React.StrictMode>
 );
 

@@ -4,6 +4,7 @@ import {
   getAmericanDate,
   getDateFromString,
   getTranslatedType,
+  showErrorMessage,
 } from "../../utils";
 import {
   Button,
@@ -32,16 +33,16 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
     e.preventDefault();
 
     if (type !== "credit" && type !== "debit")
-      return window.alert("Tipo inválido");
+      return showErrorMessage("Tipo inválido");
 
-    if (!value) return window.alert("Valor não pode ser vazio");
+    if (!value) return showErrorMessage("Valor não pode ser vazio");
 
-    if (!description) return window.alert("Descrição não pode ser vazio");
+    if (!description) return showErrorMessage("Descrição não pode ser vazio");
 
-    if (!referenceDate) return window.alert("Data não pode ser vazio");
+    if (!referenceDate) return showErrorMessage("Data não pode ser vazio");
 
     if (referenceDate > new Date())
-      return window.alert("Data não pode ser no futuro");
+      return showErrorMessage("Data não pode ser no futuro");
 
     onSubmit({
       description,

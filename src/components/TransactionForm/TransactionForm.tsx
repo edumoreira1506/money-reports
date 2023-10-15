@@ -5,6 +5,16 @@ import {
   getDateFromString,
   getTranslatedType,
 } from "../../utils";
+import {
+  Button,
+  Select,
+  Text,
+  TextArea,
+  TextFieldInput,
+  TextFieldRoot,
+} from "@radix-ui/themes";
+
+import "./TransactionForm.css";
 
 type TransactionFormProps = {
   onSubmit: (transaction: Omit<Transaction, "id">) => void;
@@ -47,34 +57,54 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <form action="" onSubmit={validateForm}>
-      <input
+    <form action="" onSubmit={validateForm} className="flex flex-col gap-3">
+      <Text>Nova transação</Text>
+
+      <TextArea
+        placeholder="Descrição da transação"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        name="description"
+      />
+
+      <TextFieldInput
         type="number"
         value={value === 0 ? "" : value}
         onChange={(e) => setValue(Number(e.target.value))}
+        name="value"
+        placeholder="Valor da transação"
       />
 
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="">Selecionar...</option>
-        <option value="credit">{getTranslatedType("credit")}</option>
-        <option value="debit">{getTranslatedType("debit")}</option>
-      </select>
+      <Select.Root
+        defaultValue=""
+        name="type"
+        value={type}
+        onValueChange={(newType) => setType(newType)}
+      >
+        <Select.Trigger placeholder="Tipo da transação" />
 
-      <textarea
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        cols={30}
-        rows={10}
-      />
+        <Select.Content>
+          <Select.Item value="credit">
+            {getTranslatedType("credit")}
+          </Select.Item>
+          <Select.Item value="debit">{getTranslatedType("debit")}</Select.Item>
+        </Select.Content>
+      </Select.Root>
 
-      <input
-        onChange={(e) => setReferenceDate(getDateFromString(e.target.value))}
-        type="date"
-        value={getAmericanDate(referenceDate)}
-        max={getAmericanDate(currentDate)}
-      />
+      <TextFieldRoot>
+        <input
+          className="-translate-x-1 input-date rt-TextFieldInput rt-r-size-2 rt-variant-surface"
+          name="referenceDate"
+          onChange={(e) => setReferenceDate(getDateFromString(e.target.value))}
+          type="date"
+          value={getAmericanDate(referenceDate)}
+          max={getAmericanDate(currentDate)}
+        />
 
-      <button type="submit">Salvar</button>
+        <div className="rt-TextFieldChrome" />
+      </TextFieldRoot>
+
+      <Button type="submit">Salvar</Button>
     </form>
   );
 };

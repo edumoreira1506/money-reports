@@ -4,6 +4,7 @@ import "./index.css";
 import { App } from "./components/App";
 import reportWebVitals from "./reportWebVitals";
 import { Theme } from "@radix-ui/themes";
+
 import "@radix-ui/themes/styles.css";
 
 const root = ReactDOM.createRoot(
@@ -12,7 +13,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Theme>
+    <Theme appearance="dark">
       <App />
     </Theme>
   </React.StrictMode>

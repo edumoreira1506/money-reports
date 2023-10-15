@@ -32,17 +32,15 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
   const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (type !== "credit" && type !== "debit")
-      return showErrorMessage("Tipo inválido");
+    const errors = [] as string[];
 
-    if (!value) return showErrorMessage("Valor não pode ser vazio");
+    if (type !== "credit" && type !== "debit") errors.push("Tipo inválido");
+    if (!value) errors.push("Valor não pode ser vazio");
+    if (!description) errors.push("Descrição não pode ser vazio");
+    if (!referenceDate) errors.push("Data não pode ser vazio");
+    if (referenceDate > new Date()) errors.push("Data não pode ser no futuro");
 
-    if (!description) return showErrorMessage("Descrição não pode ser vazio");
-
-    if (!referenceDate) return showErrorMessage("Data não pode ser vazio");
-
-    if (referenceDate > new Date())
-      return showErrorMessage("Data não pode ser no futuro");
+    if (errors.length > 0) return showErrorMessage(errors.join(". "));
 
     onSubmit({
       description,

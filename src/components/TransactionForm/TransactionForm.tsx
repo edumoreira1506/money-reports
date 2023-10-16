@@ -70,7 +70,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
 
       <TextArea
         placeholder="Descrição da transação"
-        {...register("description", { required: true })}
+        {...register("description", { required: "Descrição é obrigatório" })}
         className={
           errors.description ? "textarea-description-error" : undefined
         }
@@ -79,13 +79,16 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       <TextFieldInput
         placeholder="Valor da transação"
         type="number"
-        {...register("value", { required: true, valueAsNumber: true })}
+        {...register("value", {
+          required: "Valor é obrigatório",
+          valueAsNumber: true,
+        })}
         className={errors.value ? "!border-rose-600" : undefined}
       />
 
       <Controller
         name="type"
-        rules={{ required: true }}
+        rules={{ required: "Tipo é obrigatório" }}
         control={control}
         render={({ field }) => (
           <SelectItem
@@ -100,7 +103,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
 
       <Controller
         name="referenceDate"
-        rules={{ required: true }}
+        rules={{ required: "Data é obrigatório" }}
         control={control}
         render={({ field }) => (
           <TextFieldRoot>

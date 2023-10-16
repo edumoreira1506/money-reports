@@ -7,7 +7,15 @@ export const getTranslatedType = (transactionType: string) =>
 export const getBrazilianDate = (rawDate: Date) =>
   format(rawDate, "dd/MM/yyyy");
 
-export const getAmericanDate = (rawDate: Date) => format(rawDate, "yyyy-MM-dd");
+export const getAmericanDate = (rawDate: Date) => {
+  try {
+    return format(rawDate, "yyyy-MM-dd");
+  } catch {
+    console.error("Error parsing date", rawDate);
+
+    return undefined;
+  }
+};
 
 export const getBrazilianValue = (numberValue: number) =>
   new Intl.NumberFormat("pt-BR", {

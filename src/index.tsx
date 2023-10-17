@@ -4,13 +4,19 @@ import "./index.css";
 import { App } from "./components/App";
 import reportWebVitals from "./reportWebVitals";
 
+import "@radix-ui/themes/styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import { Providers } from "./components/Providers";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
-    <App />
+    <Providers>
+      <App />
+    </Providers>
   </React.StrictMode>
 );
 

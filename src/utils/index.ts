@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { toast } from "react-toastify";
 
 export const getTranslatedType = (transactionType: string) =>
   transactionType === "credit" ? "Crédito" : "Débito";
@@ -16,3 +17,15 @@ export const getBrazilianValue = (numberValue: number) =>
 
 export const getDateFromString = (rawString: string) =>
   new Date(`${rawString}T00:00:00`);
+
+export const showErrorMessage = (errorMessage: string) =>
+  toast.error(errorMessage, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "dark",
+  });

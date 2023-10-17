@@ -1,10 +1,6 @@
 import { FC } from "react";
 import { Transaction } from "../../types";
-import {
-  getBrazilianDate,
-  getBrazilianValue,
-  getTranslatedType,
-} from "../../utils";
+import { TransactionDetail } from "../TransactionDetail";
 
 type TransactionsListProps = {
   transactions: Transaction[];
@@ -16,18 +12,16 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   <>
     <h1>Lista de transações</h1>
 
-    <ol>
+    <ol className="flex flex-col gap-3">
       {transactions.map((transaction) => (
         <li key={transaction.id}>
-          <span>{transaction.id} - </span>
-
-          <span>{transaction.description} - </span>
-
-          <span>{getTranslatedType(transaction.type)} - </span>
-
-          <span>{getBrazilianDate(transaction.referenceDate)} - </span>
-
-          <span>{getBrazilianValue(transaction.value)}</span>
+          <TransactionDetail
+            value={transaction.value}
+            type={transaction.type}
+            referenceDate={transaction.referenceDate}
+            id={transaction.id}
+            description={transaction.description}
+          />
         </li>
       ))}
     </ol>

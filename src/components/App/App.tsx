@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { TransactionForm } from "../TransactionForm";
 import { TransactionsList } from "../TransactionsList";
 import { Transaction } from "../../types";
+import { FormModal } from "../FormModal";
 
 export function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -21,7 +21,7 @@ export function App() {
 
   return (
     <div className="p-6 flex flex-col gap-6">
-      <TransactionForm onSubmit={onCreateTransaction} />
+      <FormModal onCreateTransaction={onCreateTransaction} />
       <TransactionsList transactions={transactions} />
     </div>
   );

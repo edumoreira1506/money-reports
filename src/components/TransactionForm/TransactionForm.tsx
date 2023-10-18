@@ -8,8 +8,8 @@ import {
 } from "../../utils";
 import {
   Button,
+  DialogClose,
   Select,
-  Text,
   TextArea,
   TextFieldInput,
   TextFieldRoot,
@@ -40,7 +40,7 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     control,
     getValues,
     reset,
@@ -49,10 +49,12 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
     mode: "all",
   });
 
-  const validateForm = (newTransaction: TransactionWithNullableValue) => {
-    const errorsValues = Object.values(errors);
+  const errorsValues = Object.values(errors);
 
-    if (errorsValues.length) {
+  const formError = Boolean(errorsValues.length);
+
+  const validateForm = (newTransaction: TransactionWithNullableValue) => {
+    if (formError) {
       return showErrorMessage(errorsValues.map((e) => e.message).join(". "));
     }
 
@@ -66,8 +68,6 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
       onSubmit={handleSubmit(validateForm)}
       className="flex flex-col gap-3"
     >
-      <Text>Nova transação</Text>
-
       <TextArea
         placeholder="Descrição da transação"
         {...register("description", { required: "Descrição é obrigatório" })}
@@ -136,7 +136,9 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
         )}
       />
 
-      <Button type="submit">Salvar</Button>
+      <DialogClose className=" h-6" disabled={formError || !isValid}>
+        <Button type="submit">Cadastrar</Button>
+      </DialogClose>
     </form>
   );
 };

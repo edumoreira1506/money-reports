@@ -1,4 +1,4 @@
-import { FC, forwardRef } from "react";
+import { FC } from "react";
 import { Transaction } from "../../types";
 import {
   getAmericanDate,
@@ -9,15 +9,14 @@ import {
 import {
   Button,
   DialogClose,
-  Select,
+  Flex,
   TextArea,
   TextFieldInput,
   TextFieldRoot,
 } from "@radix-ui/themes";
-import { Controller, Noop, useForm } from "react-hook-form";
-
+import { Controller, useForm } from "react-hook-form";
+import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import "./TransactionForm.css";
-import { SelectRootProps } from "@radix-ui/themes/dist/cjs/components/select";
 
 type TransactionWithNullableValue = Omit<Transaction, "id" | "value"> & {
   value: number | null;
@@ -90,15 +89,33 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
         name="type"
         rules={{ required: "Tipo é obrigatório" }}
         control={control}
-        render={({ field }) => (
-          <SelectItem
-            ref={field.ref}
-            onValueChange={field.onChange}
-            value={field.value}
-            hasError={Boolean(errors.type)}
-            onBlur={field.onBlur}
-          />
-        )}
+        render={({ field }) => {
+          const isCredit = field.value === "credit";
+          const isDebit = field.value === "debit";
+          return (
+            <Flex onBlur={field.onBlur} gap="1" ref={field.ref}>
+              <Button
+                type="button"
+                onClick={() => field.onChange("credit")}
+                className={`grow ${
+                  isCredit ? "!bg-green-600" : "!bg-zinc-800"
+                }`}
+              >
+                <ArrowUpIcon color={isCredit ? "white" : "green"} />
+                {getTranslatedType("credit")}
+              </Button>
+
+              <Button
+                type="button"
+                onClick={() => field.onChange("debit")}
+                className={`grow ${isDebit ? "!bg-red-600" : "!bg-zinc-800"}`}
+              >
+                <ArrowDownIcon color={isDebit ? "white" : "red"} />
+                {getTranslatedType("debit")}
+              </Button>
+            </Flex>
+          );
+        }}
       />
 
       <Controller
@@ -142,25 +159,3 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
     </form>
   );
 };
-
-const SelectItem = forwardRef<
-  HTMLButtonElement,
-  SelectRootProps & {
-    hasError: boolean;
-    onBlur: Noop;
-  }
->(({ value, onValueChange, hasError, onBlur }, ref) => (
-  <Select.Root value={value} onValueChange={onValueChange} name="type">
-    <Select.Trigger
-      placeholder="Tipo da transação"
-      ref={ref}
-      onBlur={onBlur}
-      className={hasError ? "select-type-error" : undefined}
-    />
-
-    <Select.Content>
-      <Select.Item value="credit">{getTranslatedType("credit")}</Select.Item>
-      <Select.Item value="debit">{getTranslatedType("debit")}</Select.Item>
-    </Select.Content>
-  </Select.Root>
-));

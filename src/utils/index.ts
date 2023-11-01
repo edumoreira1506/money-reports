@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { toast } from "react-toastify";
 
 export const getTranslatedType = (transactionType: string) =>
-  transactionType === "credit" ? "Crédito" : "Débito";
+  transactionType === "credit" ? "Entrada" : "Saída";
 
 export const getBrazilianDate = (rawDate: Date) =>
   format(rawDate, "dd/MM/yyyy");

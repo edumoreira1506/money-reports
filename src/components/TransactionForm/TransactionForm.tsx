@@ -3,6 +3,7 @@ import { Transaction } from "../../types";
 import {
   getAmericanDate,
   getDateFromString,
+  getNumberFromDecimalString,
   getTranslatedType,
   showErrorMessage,
 } from "../../utils";
@@ -11,15 +12,15 @@ import {
   DialogClose,
   Flex,
   TextArea,
-  TextFieldInput,
   TextFieldRoot,
 } from "@radix-ui/themes";
 import { Controller, useForm } from "react-hook-form";
 import { ArrowUpIcon, ArrowDownIcon } from "@radix-ui/react-icons";
 import "./TransactionForm.css";
+import { CurrencyInput } from "input-currency-react";
 
 type TransactionWithNullableValue = Omit<Transaction, "id" | "value"> & {
-  value: number | null;
+  value: string;
 };
 
 type TransactionFormProps = {
@@ -32,7 +33,7 @@ const defaultValues = {
   description: "",
   type: "",
   referenceDate: currentDate,
-  value: null,
+  value: "",
 };
 
 export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
@@ -58,7 +59,10 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
     }
 
     reset(defaultValues);
-    onSubmit({ ...newTransaction, value: Number(newTransaction.value) });
+    onSubmit({
+      ...newTransaction,
+      value: getNumberFromDecimalString(newTransaction.value),
+    });
   };
 
   return (
@@ -75,14 +79,31 @@ export const TransactionForm: FC<TransactionFormProps> = ({ onSubmit }) => {
         }
       />
 
-      <TextFieldInput
-        placeholder="Valor da transação"
-        type="number"
-        {...register("value", {
-          required: "Valor é obrigatório",
-          valueAsNumber: true,
-        })}
-        className={errors.value ? "!border-rose-600" : undefined}
+      <Controller
+        name="value"
+        rules={{ required: "Valor é obrigatório" }}
+        control={control}
+        render={({ field }) => {
+          return (
+            <div className="rt-TextFieldRoot">
+              <CurrencyInput
+                value={field.value}
+                options={{ style: "decimal", allowNegative: false }}
+                onChangeEvent={(_, maskedValue) => {
+                  field.onChange(maskedValue);
+                }}
+                required={true}
+                className={`!text-left rt-TextFieldInput rt-r-size-2 rt-variant-surface ${
+                  errors.value ? "!border-rose-600" : ""
+                }`}
+                onBlur={field.onBlur}
+                ref={field.ref}
+              />
+
+              <div className="rt-TextFieldChrome" />
+            </div>
+          );
+        }}
       />
 
       <Controller

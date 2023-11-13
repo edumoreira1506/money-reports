@@ -15,6 +15,9 @@ export const getBrazilianValue = (numberValue: number) =>
     currency: "BRL",
   }).format(numberValue);
 
+export const getNumberFromDecimalString = (decimalString: string) =>
+  Number(decimalString.replaceAll(".", "").replace(",", "."));
+
 export const getDateFromString = (rawString: string) =>
   new Date(`${rawString}T00:00:00`);
 
